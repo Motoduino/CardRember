@@ -38,7 +38,9 @@ let gameState = {
     timer: MEMORIZE_TIME,
     gamePhase: 'start', // 'start', 'memorize', 'play', 'end'
     timerInterval: null,
-    particles: []
+    particles: [],
+    isChecking: false // 新增：是否正在检查卡牌匹配
+    // 移除 endGameTimer
 };
 
 // DOM元素
@@ -237,8 +239,8 @@ function handleCardTouch(event) {
 
 // 检查卡牌翻转
 function checkCardFlip(x, y) {
-    // 如果已经翻开两张牌，则不能再翻
-    if (gameState.flippedCards.length >= 2) return;
+    // 如果已经翻开两张牌或正在检查匹配，则不能再翻
+    if (gameState.flippedCards.length >= 2 || gameState.isChecking) return;
     
     // 检查点击的是哪张卡牌
     for (let i = 0; i < gameState.cards.length; i++) {
@@ -253,7 +255,7 @@ function checkCardFlip(x, y) {
             
             // 播放翻牌音效
             flipSound.currentTime = 0;
-            flipSound.play().catch(e => console.log("无法播放音效:", e));
+            flipSound.play().catch(e => console.log("無法播放音效:", e));
             
             // 翻转卡牌
             card.flipped = true;
@@ -261,6 +263,7 @@ function checkCardFlip(x, y) {
             
             // 如果翻开了两张牌，检查是否匹配
             if (gameState.flippedCards.length === 2) {
+                gameState.isChecking = true; // 设置正在检查状态
                 setTimeout(checkMatch, 500);
             }
             
@@ -286,7 +289,7 @@ function checkMatch() {
         
         // 播放匹配成功音效
         matchSound.currentTime = 0;
-        matchSound.play().catch(e => console.log("无法播放音效:", e));
+        matchSound.play().catch(e => console.log("無法播放音效:", e));
         
         // 更新答对次数和分数
         gameState.correctCount++;
@@ -300,6 +303,9 @@ function checkMatch() {
         if (gameState.matchedPairs === TOTAL_CARDS / 2) {
             setTimeout(endGame, 1000);
         }
+        
+        // 重置检查状态
+        gameState.isChecking = false;
     } else {
         // 匹配失败，将卡牌翻回
         setTimeout(() => {
@@ -308,7 +314,10 @@ function checkMatch() {
             
             // 播放匹配失败音效
             failSound.currentTime = 0;
-            failSound.play().catch(e => console.log("无法播放音效:", e));
+            failSound.play().catch(e => console.log("無法播放音效:", e));
+            
+            // 重置检查状态，允许玩家继续翻牌
+            gameState.isChecking = false;
         }, 500);
     }
     
@@ -391,9 +400,11 @@ function endGame() {
     gameState.gamePhase = 'end';
     clearInterval(gameState.timerInterval);
     
+    // 隐藏游戏屏幕并直接显示结束屏幕
     gameScreen.classList.add('hidden');
     endScreen.classList.remove('hidden');
     
+    // 设置最终得分
     finalScoreElement.textContent = `你的最終得分: ${gameState.score}`;
     
     // 根据正确率显示不同的鼓励语 - 修改为繁体中文
@@ -409,6 +420,19 @@ function endGame() {
     }
     
     finalEncouragementElement.textContent = finalEncouragement;
+    
+    // 移除3秒倒計時相關代碼
+}
+
+// 重新开始游戏
+function restartGame() {
+    endScreen.classList.add('hidden');
+    gameScreen.classList.remove('hidden');
+    
+    // 移除清除計時器的代碼
+    
+    initCards();
+    startGame();
 }
 
 // 绘制卡牌
