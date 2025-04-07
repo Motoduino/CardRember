@@ -13,18 +13,18 @@ const CARD_COLORS = {
     '♦': '#ff0000'  // 红色
 };
 
-// 鼓励语列表
+// 鼓励语列表 - 修改为繁体中文
 const ENCOURAGEMENTS = [
     "哇塞，你真棒！",
     "加油，你是最棒的！",
-    "太厉害了，继续保持！",
-    "你就是今天的记忆之星！",
-    "记忆力超群，佩服佩服！",
-    "这波操作，满分！",
-    "脑力担当就是你！",
-    "记忆力MAX，无人能敌！",
-    "这记性，简直了！",
-    "大脑CPU超频运行中！"
+    "太厲害了，繼續保持！",
+    "你就是今天的記憶之星！",
+    "記憶力超群，佩服佩服！",
+    "這波操作，滿分！",
+    "腦力擔當就是你！",
+    "記憶力MAX，無人能敵！",
+    "這記性，簡直了！",
+    "大腦CPU超頻運行中！"
 ];
 
 // 游戏状态
@@ -170,13 +170,13 @@ function startGame() {
     
     // 播放背景音乐
     bgm.volume = 0.3;
-    bgm.play().catch(e => console.log("无法自动播放音频:", e));
+    bgm.play().catch(e => console.log("無法自動播放音頻:", e));
     
-    // 开始记牌计时
-    timerElement.textContent = `记牌时间: ${gameState.timer}`;
+    // 开始记牌计时 - 修改为繁体中文
+    timerElement.textContent = `記牌時間: ${gameState.timer}`;
     gameState.timerInterval = setInterval(() => {
         gameState.timer--;
-        timerElement.textContent = `记牌时间: ${gameState.timer}`;
+        timerElement.textContent = `記牌時間: ${gameState.timer}`;
         
         if (gameState.timer <= 0) {
             clearInterval(gameState.timerInterval);
@@ -188,7 +188,7 @@ function startGame() {
 // 开始游戏阶段
 function startPlayPhase() {
     gameState.gamePhase = 'play';
-    timerElement.textContent = '开始翻牌吧！';
+    timerElement.textContent = '開始翻牌吧！';
     
     // 将所有卡牌翻面
     gameState.cards.forEach(card => {
@@ -316,10 +316,10 @@ function checkMatch() {
     gameState.flippedCards = [];
 }
 
-// 更新分数 - 修改为显示答对/总答题的格式
+// 更新分数 - 修改为显示答对/总答题的格式，使用繁体中文
 function updateScore() {
     gameState.score = `${gameState.correctCount}/${gameState.totalAttempts}`;
-    scoreElement.textContent = `分数: ${gameState.score}`;
+    scoreElement.textContent = `分數: ${gameState.score}`;
 }
 
 // 显示鼓励语
@@ -394,18 +394,18 @@ function endGame() {
     gameScreen.classList.add('hidden');
     endScreen.classList.remove('hidden');
     
-    finalScoreElement.textContent = `你的最终得分: ${gameState.score}`;
+    finalScoreElement.textContent = `你的最終得分: ${gameState.score}`;
     
-    // 根据正确率显示不同的鼓励语
+    // 根据正确率显示不同的鼓励语 - 修改为繁体中文
     let finalEncouragement = "";
     const correctRatio = gameState.totalAttempts === 0 ? 1 : gameState.correctCount / gameState.totalAttempts;
     
     if (correctRatio === 1) {
-        finalEncouragement = "太厉害了！你的记忆力简直无人能敌！";
+        finalEncouragement = "太厲害了！你的記憶力簡直無人能敵！";
     } else if (correctRatio >= 0.7) {
-        finalEncouragement = "很棒的表现！你的记忆力令人印象深刻！";
+        finalEncouragement = "很棒的表現！你的記憶力令人印象深刻！";
     } else {
-        finalEncouragement = "不错的尝试！再来一次，你一定能做得更好！";
+        finalEncouragement = "不錯的嘗試！再來一次，你一定能做得更好！";
     }
     
     finalEncouragementElement.textContent = finalEncouragement;
