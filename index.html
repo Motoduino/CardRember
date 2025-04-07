@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>记忆大考验</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="game-container">
+        <div id="start-screen" class="screen">
+            <h1>记忆大考验</h1>
+            <button id="start-button">开始游戏</button>
+        </div>
+        
+        <div id="game-screen" class="screen hidden">
+            <div class="game-info">
+                <div id="timer">记牌时间: 5</div>
+                <div id="score">分数: 0</div>
+            </div>
+            <div id="encouragement" class="hidden"></div>
+            <canvas id="game-canvas"></canvas>
+        </div>
+        
+        <div id="end-screen" class="screen hidden">
+            <h2>游戏结束!</h2>
+            <p id="final-score">你的最终得分: 0</p>
+            <p id="final-encouragement"></p>
+            <button id="restart-button">再玩一次</button>
+        </div>
+    </div>
+    
+    <audio id="bgm" loop>
+        <source src="sounds/bgm.mp3" type="audio/mp3">
+    </audio>
+    <audio id="flip-sound">
+        <source src="sounds/flip.mp3" type="audio/mp3">
+    </audio>
+    <audio id="match-sound">
+        <source src="sounds/match.mp3" type="audio/mp3">
+    </audio>
+    <audio id="fail-sound">
+        <source src="sounds/fail.mp3" type="audio/mp3">
+    </audio>
+    
+    <script src="script.js"></script>
+</body>
+</html>
